@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Notifications</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        h1 {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            font-size: 50px;
+            transform: translateX(-50%);
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        a {
+            position: fixed;
+            bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .notification {
+            position: absolute;
+            width: 240px;
+            height: 160px;
+            background-color: #FFB6C1;
+            color: rgb(0, 0, 0);
+            font-size: 16px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 2;
+            border: 4px solid #ffffff;
+            animation: fadeIn 0.5s ease-in-out;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            padding: 5px;
+            background-color: #ffffff;
+            border-radius: 5px 5px 0 0;
+            color: black;
+            font-weight: bold;
+        }
+
+        .notification-header span {
+            flex-grow: 1;
+            text-align: center;
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+
+        .notification p {
+            margin: 0;
+            text-align: center;
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .minimize-btn {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            background-color: transparent;
+            border: none;
+            color: black;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .minimize-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="nhonhoem.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát nhạc.
+    </audio>
+
+    <script>
+        const messages = ["Nhớ nhớ nhớ em!"];
+
+        function generateRandomNotifications() {
+            const notificationCount = 100;
+            const audio = document.getElementById('backgroundMusic');
+
+            for (let i = 0; i < notificationCount; i++) {
+                setTimeout(() => {
+                    const notification = document.createElement('div');
+                    notification.className = 'notification';
+
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    notification.innerHTML = `
+                        <div class="notification-header">
+                            <button class="minimize-btn" onclick="minimizeNotification(this)">–</button>
+                            <span>Tràn ngập bộ</span>
+                        </div>
+                        <p>${randomMessage}</p>
+                    `;
+
+                    const x = Math.random() * (window.innerWidth - 240);
+                    const y = Math.random() * (window.innerHeight - 160);
+                    notification.style.left = `${x}px`;
+                    notification.style.top = `${y}px`;
+
+                    document.body.appendChild(notification);
+
+                    if (i === 0) audio.play();
+                }, i * 200);
+            }
+        }
+
+        function minimizeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.style.display = 'none';
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            generateRandomNotifications();
+
+            const encodedText = '&#68;&#101;&#115;&#105;&#103;&#110;&#32;&#98;&#121;&#32;&#80;&#97;&#110;&#98;&#97;&#112;';
+            const footer = document.createElement("a");
+            footer.innerHTML = encodedText;
+            document.body.appendChild(footer);
+        });
+    </script>
+</body>
+
+</html>
